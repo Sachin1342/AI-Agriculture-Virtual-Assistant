@@ -25,11 +25,12 @@ docker compose up --build
 ## Retrain ML models
 ```bash
 cd backend
-python ml/training/train_groundwater_model.py
-python ml/training/train_crop_yield_model.py
-python ml/training/train_resource_recommender.py
+python ml/training/groundwater_train.py
+python ml/training/crop_yield_train.py
 # requires tensorflow:
-python ml/training/train_disease_model.py
+python ml/training/crop_disease_train.py
+# optional hybrid recommender:
+python ml/training/train_resource_recommender.py
 ```
 
 
