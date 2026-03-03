@@ -7,13 +7,21 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 15000,
 });
 
-// Chatbot API calls
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const message = error?.response?.data?.detail || error.message || 'Unexpected API error';
+    return Promise.reject(new Error(message));
+  }
+);
+
 export const chatbotAPI = {
-  sendMessage: (message) =>
-    api.post('/chatbot/message', { message }),
-  
+  sendMessage: (message, sessionId = null) =>
+    api.post('/chatbot/message', { message, session_id: sessionId }),
+
   detectDisease: (file) => {
     const formData = new FormData();
     formData.append('file', file);
@@ -21,33 +29,19 @@ export const chatbotAPI = {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
-  
-  getChatHistory: () =>
-    api.get('/chatbot/history'),
-  
-  clearHistory: () =>
-    api.post('/chatbot/clear-history'),
-  
-  getIntents: () =>
-    api.get('/chatbot/intents'),
+
+  getChatHistory: () => api.get('/chatbot/history'),
+  clearHistory: () => api.post('/chatbot/clear-history'),
+  getIntents: () => api.get('/chatbot/intents'),
 };
 
-// Predictions API calls
 export const predictionsAPI = {
-  groundwaterPrediction: (data) =>
-    api.post('/predictions/groundwater', data),
-  
-  productionForecast: (data) =>
-    api.post('/predictions/production', data),
-  
-  irrigationSchedule: (data) =>
-    api.post('/predictions/irrigation-schedule', data),
-  
-  fertilizerSchedule: (data) =>
-    api.post('/predictions/fertilizer-schedule', data),
-  
-  optimizeResources: (data) =>
-    api.post('/predictions/optimize-resources', data),
+  groundwaterPrediction: (data) => api.post('/predictions/groundwater', data),
+  productionForecast: (data) => api.post('/predictions/production', data),
+  irrigationSchedule: (data) => api.post('/predictions/irrigation-schedule', data),
+  fertilizerSchedule: (data) => api.post('/predictions/fertilizer-schedule', data),
+  optimizeResources: (data) => api.post('/predictions/optimize-resources', data),
+  getHistory: () => api.get('/predictions/history'),
 };
 
 export default api;

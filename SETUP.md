@@ -1,0 +1,33 @@
+# Environment Setup
+
+## Backend (FastAPI)
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env 2>/dev/null || true
+DATABASE_URL=sqlite:///./crop_assistant.db python -m uvicorn app.main:app --reload
+```
+
+## Frontend (React)
+```bash
+cd frontend
+npm install
+REACT_APP_API_URL=http://localhost:8000/api/v1 npm start
+```
+
+## Optional Docker
+```bash
+docker compose up --build
+```
+
+## Retrain ML models
+```bash
+cd backend
+python ml/training/train_groundwater_model.py
+python ml/training/train_crop_yield_model.py
+python ml/training/train_resource_recommender.py
+# requires tensorflow:
+python ml/training/train_disease_model.py
+```
