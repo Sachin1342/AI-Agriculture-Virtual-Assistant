@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from typing import Dict, List
 from sklearn.preprocessing import StandardScaler
+from app.core.config import settings
 
 class GroundwaterPredictionService:
     """
@@ -21,6 +22,7 @@ class GroundwaterPredictionService:
             'acidic': 5,
             'alkaline': 6
         }
+        self.load_model(settings.groundwater_model_path)
     
     def load_model(self, model_path: str):
         """Load pre-trained groundwater model"""
@@ -42,7 +44,17 @@ class GroundwaterPredictionService:
             features = self._prepare_features(data)
             
             if self.model is not None:
-                prediction = self.model.predict([features])[0]
+                if hasattr(self.model, "predict"):
+                    model_input = pd.DataFrame([{
+                        "rainfall": data.get("rainfall", 100),
+                        "soil_type": data.get("soil_type", "loamy"),
+                        "temperature": data.get("temperature", 25),
+                        "humidity": data.get("humidity", 60),
+                        "previous_level": data.get("previous_level", 5.0),
+                    }])
+                    prediction = self.model.predict(model_input)[0]
+                else:
+                    prediction = self._mock_prediction(data)
             else:
                 prediction = self._mock_prediction(data)
             
@@ -169,6 +181,7 @@ class CropProductionPredictorService:
     def __init__(self):
         self.model = None
         self.crops = ['rice', 'wheat', 'corn', 'tomato', 'potato', 'cotton', 'sugarcane']
+        self.load_model(settings.production_model_path)
     
     def load_model(self, model_path: str):
         """Load production prediction model"""
@@ -193,8 +206,16 @@ class CropProductionPredictorService:
             temperature = data.get('temperature', 25)
             
             if self.model is not None:
-                features = self._prepare_features(data)
-                predicted_yield_per_hectare = self.model.predict([features])[0]
+                model_input = pd.DataFrame([{
+                    'crop_type': crop,
+                    'area': data.get('area', 1.0),
+                    'rainfall': rainfall,
+                    'temperature': temperature,
+                    'humidity': data.get('humidity', 60),
+                    'soil_nutrients': data.get('soil_nutrients', 50),
+                    'fertilizer_amount': data.get('fertilizer_amount', 100),
+                }])
+                predicted_yield_per_hectare = self.model.predict(model_input)[0]
             else:
                 predicted_yield_per_hectare = self._mock_prediction(data)
             

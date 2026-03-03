@@ -35,6 +35,9 @@ A production-ready AI system providing:
 
 ## 🚀 Quick Start
 
+For a clean local/dev setup, see [SETUP.md](SETUP.md).
+
+
 ### Prerequisites
 - Docker & Docker Compose
 - Python 3.11+ (for local development)
@@ -123,6 +126,7 @@ crop-predictor/
 - `POST /api/v1/predictions/irrigation-schedule` - Generate irrigation schedule
 - `POST /api/v1/predictions/fertilizer-schedule` - Generate fertilizer schedule
 - `POST /api/v1/predictions/optimize-resources` - Comprehensive resource optimization
+- `GET /api/v1/predictions/history` - Prediction history
 
 ## 🧠 AI Models & Features
 

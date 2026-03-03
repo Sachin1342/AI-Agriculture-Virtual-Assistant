@@ -78,3 +78,13 @@ class User(Base):
     hashed_password = Column(String(255))
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class PredictionHistory(Base):
+    __tablename__ = "prediction_history"
+
+    id = Column(Integer, primary_key=True, index=True)
+    prediction_type = Column(String(50), index=True)
+    input_payload = Column(JSON)
+    output_payload = Column(JSON)
+    created_at = Column(DateTime, default=datetime.utcnow)

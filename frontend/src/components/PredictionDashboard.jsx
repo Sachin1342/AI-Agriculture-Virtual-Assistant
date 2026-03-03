@@ -5,6 +5,7 @@ const PredictionDashboard = () => {
   const [activeTab, setActiveTab] = useState('groundwater');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [error, setError] = useState('');
 
   // Groundwater Form
   const [groundwaterForm, setGroundwaterForm] = useState({
@@ -37,11 +38,12 @@ const PredictionDashboard = () => {
   const handleGroundwaterSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError('');
     try {
       const response = await predictionsAPI.groundwaterPrediction(groundwaterForm);
       setResult(response.data);
     } catch (error) {
-      alert('Error predicting groundwater: ' + error.message);
+      setError('Error predicting groundwater: ' + error.message);
     }
     setLoading(false);
   };
@@ -49,11 +51,12 @@ const PredictionDashboard = () => {
   const handleProductionSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError('');
     try {
       const response = await predictionsAPI.productionForecast(productionForm);
       setResult(response.data);
     } catch (error) {
-      alert('Error predicting production: ' + error.message);
+      setError('Error predicting production: ' + error.message);
     }
     setLoading(false);
   };
@@ -61,11 +64,12 @@ const PredictionDashboard = () => {
   const handleIrrigationSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError('');
     try {
       const response = await predictionsAPI.irrigationSchedule(irrigationForm);
       setResult(response.data);
     } catch (error) {
-      alert('Error generating schedule: ' + error.message);
+      setError('Error generating schedule: ' + error.message);
     }
     setLoading(false);
   };
@@ -112,6 +116,12 @@ const PredictionDashboard = () => {
               {activeTab === 'irrigation' && '🚿 Irrigation Schedule'}
             </h2>
 
+
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                {error}
+              </div>
+            )}
             <form onSubmit={
               activeTab === 'groundwater' ? handleGroundwaterSubmit :
               activeTab === 'production' ? handleProductionSubmit :

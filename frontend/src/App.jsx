@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import ChatbotComponent from './components/ChatbotComponent';
 import PredictionDashboard from './components/PredictionDashboard';
 import './App.css';
@@ -31,8 +31,8 @@ const HomePage = () => (
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 max-w-2xl w-full">
-        <a
-          href="/chatbot"
+        <Link
+          to="/chatbot"
           className="bg-white text-green-600 p-8 rounded-lg shadow-lg transform hover:scale-105 transition cursor-pointer"
         >
           <div className="text-4xl mb-4">💬</div>
@@ -40,10 +40,10 @@ const HomePage = () => (
           <p className="text-sm text-gray-600">
             Ask questions about diseases, crops, water levels, and more
           </p>
-        </a>
+        </Link>
 
-        <a
-          href="/predictions"
+        <Link
+          to="/predictions"
           className="bg-white text-blue-600 p-8 rounded-lg shadow-lg transform hover:scale-105 transition cursor-pointer"
         >
           <div className="text-4xl mb-4">📊</div>
@@ -51,7 +51,7 @@ const HomePage = () => (
           <p className="text-sm text-gray-600">
             Forecast yields, water levels, and irrigation schedules
           </p>
-        </a>
+        </Link>
       </div>
 
       <div className="mt-16 grid md:grid-cols-4 gap-4 max-w-4xl w-full text-center">
