@@ -31,3 +31,12 @@ python ml/training/train_resource_recommender.py
 # requires tensorflow:
 python ml/training/train_disease_model.py
 ```
+
+
+## Preview production build (frontend)
+```bash
+cd frontend
+npm install
+npm run build:preview
+# opens static preview at http://localhost:4173
+```
