@@ -4,10 +4,24 @@
 ```bash
 cd backend
 python -m venv .venv
+
+# Linux/macOS (bash/zsh)
 source .venv/bin/activate
+
+# Windows PowerShell
+.\.venv\Scripts\Activate.ps1
+
+# Windows CMD
+.venv\Scripts\activate.bat
+
 pip install -r requirements.txt
 cp .env.example .env 2>/dev/null || true
 DATABASE_URL=sqlite:///./crop_assistant.db python -m uvicorn app.main:app --reload
+```
+
+> If PowerShell blocks script execution, run once (as current user):
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 ```
 
 ## Frontend (React)
